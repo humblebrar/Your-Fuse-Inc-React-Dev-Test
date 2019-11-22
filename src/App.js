@@ -1,26 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+import './App.css';
+import NavBar from './components/NavBar'
+import axios from 'axios';
+
+
+
+class App extends Component{
+
+  constructor(props){
+    super(props);
+    this.state = {
+      cryptos:[]
+    };
+  
+  }
+
+  componentDidMount(){
+    axios.get('https://min-api.cryptocompare.com/data/cards/general&api_key=27b1a1f7beb00b91dc5cae2ad07443ac511c7685e0adc98f0cc3907f0f43e4da')
+    .then(res=>{
+      const cryptos = res.data;
+      
+      this.setState({cryptos:cryptos});
+    })
+  }
+
+
+  render()
+  {
+    console.log(this.state.cryptos.Data);
+    
+      
+    return(
+<div className="App">
+<NavBar/>
+{ Object.keys(this.state.cryptos.Data).map((key) =>(
+        <div className="container">
+        <span>{key}</span>
+        <span>{this.state.cryptos[key].Name}</span>
+          </div>
+      ))}
+   </div>
   );
+
+  }
 }
 
 export default App;
